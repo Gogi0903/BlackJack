@@ -3,6 +3,18 @@ from Modules.dealer import Dealer
 from Modules.player import Player
 
 
+def report_status(house_hand, player_hand, show_all_cards=True, print_score=False):
+    print('___________________________________')
+    print(f"{player_hand.name}'s cards: {player_hand.hand}.")
+    if print_score:
+        print(f'{player_hand.name} score: {player_hand.score}')
+    if show_all_cards:
+        print(f"House's cards: {house_hand.hand}")
+    else:
+        print(f"House's first cards: {house_hand.first_card_in_hand}, XX")
+    print('___________________________________')
+
+
 def compare(player_score, house_score):
     # compares scores
     if player_score == house_score:
@@ -36,8 +48,8 @@ def game():
 
     is_player_turn_ended = False
 
-    player_hand = Player()
-    house_hand = Player()
+    player_hand = Player(input("Please give your name: "))
+    house_hand = Player('House')
 
     dealer.new_player(player_hand)
     dealer.new_player(house_hand)
@@ -46,10 +58,7 @@ def game():
 
     while not is_player_turn_ended:
 
-        print('___________________________________')
-        print(f'Your cards: {player_hand.hand}.\nYour score: {player_hand.score}')
-        print(f"House's first cards: {house_hand.first_card_in_hand}, XX")
-        print('___________________________________')
+        report_status(house_hand, player_hand, show_all_cards=False, print_score=True)
 
         if player_hand.score == 0 or house_hand.score == 0 or player_hand.score > 21:
             is_player_turn_ended = True
@@ -60,10 +69,7 @@ def game():
                 is_player_turn_ended = True
 
     if player_hand.score > 21:
-        print('___________________________________')
-        print(f'Your cards: {player_hand.hand}.')
-        print(f"House's cards: {house_hand.hand}")
-        print('___________________________________')
+        report_status(house_hand, player_hand)
         print(compare(player_hand.score, house_hand.score))
         input('Press enter to continue!')
         # itt még törölni kellene a consolet
@@ -72,10 +78,7 @@ def game():
     while house_hand.score < 17:
         house_hand.draw_card((dealer.pick_card()))
 
-    print('___________________________________')
-    print(f'Your cards: {player_hand.hand}.')
-    print(f"House's cards: {house_hand.hand}")
-    print('___________________________________')
+    report_status(house_hand, player_hand)
     print(compare(player_hand.score, house_hand.score))
 
     if not len(deck) > 10:

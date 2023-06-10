@@ -1,7 +1,8 @@
 class Player:
 
-    def __init__(self):
+    def __init__(self, name):
         self._cards = []
+        self.name = name
 
     @property
     def score(self):
